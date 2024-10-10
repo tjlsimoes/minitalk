@@ -6,11 +6,17 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:38:43 by tjorge-l          #+#    #+#             */
-/*   Updated: 2024/10/10 16:54:50 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2024/10/10 17:19:44 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
+
+void	error_check(int k)
+{
+	if (k == -1)
+		exit(1);
+}
 
 void	handle_sigusr12(int sign, siginfo_t *sa, void *context)
 {
@@ -47,8 +53,8 @@ int	main(void)
 	ft_bzero(&sa, sizeof(sa));
 	sa.sa_sigaction = handle_sigusr12;
 	sa.sa_flags = SA_SIGINFO;
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
+	error_check(sigaction(SIGUSR1, &sa, NULL));
+	error_check(sigaction(SIGUSR2, &sa, NULL));
 	while (1)
 	{
 		pause();
