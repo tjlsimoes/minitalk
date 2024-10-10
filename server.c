@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:38:43 by tjorge-l          #+#    #+#             */
-/*   Updated: 2024/10/10 17:19:44 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2024/10/10 17:22:21 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ int	main(void)
 	error_check(sigaction(SIGUSR1, &sa, NULL));
 	error_check(sigaction(SIGUSR2, &sa, NULL));
 	while (1)
-	{
 		pause();
-	}
 	return (0);
 }
