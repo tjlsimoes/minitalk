@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:38:26 by tjorge-l          #+#    #+#             */
-/*   Updated: 2024/10/10 16:30:40 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2024/10/10 16:54:28 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	send_signal(unsigned int pid, int c)
 		kill(pid, SIGUSR2);
 	usleep(200);
 	usleep(200);
-	// ft_printf("Sending signal...\n");
 }
 
 void	send_letter(unsigned int pid, char c)
@@ -37,7 +36,7 @@ void	send_letter(unsigned int pid, char c)
 
 int	main(int argc, char **argv)
 {
-	int 	i;
+	int	i;
 
 	if (argc != 3)
 		return (1); // Error handling
