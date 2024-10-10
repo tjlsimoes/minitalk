@@ -6,18 +6,17 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:38:43 by tjorge-l          #+#    #+#             */
-/*   Updated: 2024/10/10 16:08:41 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2024/10/10 16:30:29 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-int		i = 0;
-unsigned char letter = 0;
-
-
 void	handle_sigusr12(int sign)
 {
+	static int	i = 0;
+	static char	letter = 0;
+
 	if (sign == SIGUSR1)
 	{
 		letter = (letter << 1) | 0;
