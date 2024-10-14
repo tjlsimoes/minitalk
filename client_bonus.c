@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:38:26 by tjorge-l          #+#    #+#             */
-/*   Updated: 2024/10/14 11:24:49 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2024/10/14 12:37:25 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,31 @@ void	send_letter(unsigned int pid, char c)
 	}
 }
 
+void	incorrect_usage(void)
+{
+		ft_putstr_fd("Correct usage: ./client <PID> \"<MESSAGE>\"\n", 2);
+		exit(1);
+}
+
+void	handle_sigusr1(int sign, siginfo_t *sa, void *context)
+{
+	if (sign && sa && context)
+		write(1, "Message acknowledged by the server.\n", 36);
+}
+
 int	main(int argc, char **argv)
 {
+	struct sigaction	sa;
 	pid_t	pid;
 	int		i;
 
 	if (argc != 3)
-	{
-		ft_putstr_fd("Correct usage: ./client <PID> \"<MESSAGE>\"\n", 2);
-		exit(1);
-	}
+		incorrect_usage();
 	else
 	{
+		sa.sa_sigaction = handle_sigusr1;
+		sa.sa_flags = SA_SIGINFO;
+		error_check(sigaction(SIGUSR1, &sa, NULL));
 		i = 0;
 		pid = ft_atoi(argv[1]);
 		if (pid < 0)
