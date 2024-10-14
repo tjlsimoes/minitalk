@@ -3,16 +3,19 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tjorge-l <tjorge-l@student.42.fr>          +#+  +:+       +#+         #
+#    By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/24 15:15:50 by tjorge-l          #+#    #+#              #
-#    Updated: 2024/09/24 15:40:04 by tjorge-l         ###   ########.fr        #
+#    Updated: 2024/10/14 11:59:24 by tjorge-l         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := minitalk
 SERVER_NAME := server
 CLIENT_NAME := client
+
+SERVER_NAME_BONUS := server_bonus
+CLIENT_NAME_BONUS := client_bonus
 
 LIBFT := libft/libft.a
 PRINTF := printf/libftprintf.a
@@ -30,6 +33,17 @@ CLIENT_SRC := client.c
 
 CLIENT_OBJ := $(CLIENT_SRC:.c=.o)
 
+# Bonus
+
+SERVER_SRC_BONUS := server_bonus.c
+
+SERVER_OBJ_BONUS := $(SERVER_SRC_BONUS:.c=.o)
+
+CLIENT_SRC_BONUS := client_bonus.c
+
+CLIENT_OBJ_BONUS := $(CLIENT_SRC_BONUS:.c=.o)
+
+
 all: $(NAME)
 
 $(NAME): $(SERVER_NAME) $(CLIENT_NAME)
@@ -44,22 +58,35 @@ $(CLIENT_NAME): $(CLIENT_OBJ)
 	cd libft && $(MAKE)
 	$(CC) $(CFLAGS) $(CLIENT_OBJ) $(PRINTF) $(LIBFT) -o $(CLIENT_NAME)
 
+
+bonus: $(SERVER_NAME_BONUS) $(CLIENT_NAME_BONUS)
+
+$(SERVER_NAME_BONUS): $(SERVER_OBJ_BONUS)
+	cd printf && $(MAKE)
+	cd libft && $(MAKE)
+	$(CC) $(CFLAGS) $(SERVER_OBJ_BONUS) $(PRINTF) $(LIBFT) -o $(SERVER_NAME_BONUS)
+
+$(CLIENT_NAME_BONUS): $(CLIENT_OBJ_BONUS)
+	cd printf && $(MAKE)
+	cd libft && $(MAKE)
+	$(CC) $(CFLAGS) $(CLIENT_OBJ_BONUS) $(PRINTF) $(LIBFT) -o $(CLIENT_NAME_BONUS)
+
 clean:
 	cd printf && $(MAKE) clean
 	cd libft && $(MAKE) clean
-	$(RM) $(OBJ) $(SERVER_OBJ) $(CLIENT_OBJ)
+	$(RM) $(OBJ) $(SERVER_OBJ) $(CLIENT_OBJ) $(SERVER_OBJ_BONUS) $(CLIENT_OBJ_BONUS)
 
 fclean: clean
 	cd printf && $(MAKE) fclean
 	cd libft && $(MAKE) fclean
-	$(RM) $(SERVER_NAME) $(CLIENT_NAME)
+	$(RM) $(SERVER_NAME) $(CLIENT_NAME) $(SERVER_NAME_BONUS) $(CLIENT_NAME_BONUS)
 
 debug: CFLAGS += $(DEBUG_FLAGS)
 debug: $(SERVER_NAME) $(CLIENT_NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean debug re
+.PHONY: all minitalk bonus clean fclean debug re
 
 # $(OBJ)
 # 	cd printf && $(MAKE)
