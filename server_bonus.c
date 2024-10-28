@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:38:43 by tjorge-l          #+#    #+#             */
-/*   Updated: 2024/10/28 16:43:06 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2024/10/28 19:19:54 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,33 @@ char	*set_buffer_length(int *length, char length_str[4], int *i)
 	return (msg);
 }
 
-void	terminate(siginfo_t *sa, int *length, char *msg, int *i)
+void	terminate(siginfo_t *sa, int *length, char **msg, int *i)
 {
-	msg[((*i + 8) / 8) - 1] = '\0';
-	ft_printf("%s\n", msg);
-	free(msg);
-	msg = NULL;
+	(*msg)[((*i + 8) / 8) - 1] = '\0';
+	ft_printf("%s\n", *msg);
+	free(*msg);
+	*msg = NULL;
 	*i = 0;
 	*length = 0;
 	kill(sa->si_pid, SIGUSR2);
+}
+
+void	check_pid(siginfo_t **sa, int *i, char *letter, char **msg, int *length)
+{
+	static	pid_t		pid;
+
+	if ((*sa)->si_pid != pid && i != 0)
+	{
+		pid = (*sa)->si_pid;
+		*i = 1;
+		*letter = 0;
+		if (*msg)
+		{
+			free(*msg);
+			*msg = NULL;
+		}
+		*length = 0;
+	}
 }
 
 void	handle_sigusr12(int sign, siginfo_t *sa)
@@ -50,12 +68,10 @@ void	handle_sigusr12(int sign, siginfo_t *sa)
 	static char		letter = 0;
 	static char		length_str[4];
 	static int		length = 0;
-	static char		*msg;
+	static char		*msg = NULL;
 
-	if (sign == SIGUSR1)
-		letter = (letter << 1) | 0;
-	else
-		letter = (letter << 1) | 1;
+	check_pid(&sa, &i, &letter, &msg, &length);
+	letter = (letter << 1) | (sign == SIGUSR2);
 	if (i % 8 == 0 && i != 0)
 	{
 		if (length != 0)
@@ -66,7 +82,7 @@ void	handle_sigusr12(int sign, siginfo_t *sa)
 			msg = set_buffer_length(&length, length_str, &i);
 		letter = 0;
 		if (i / 8 - 1 == length - 1 && length)
-			terminate(sa, &length, msg, &i);
+			terminate(sa, &length, &msg, &i);
 	}
 	i++;
 	usleep(20);
