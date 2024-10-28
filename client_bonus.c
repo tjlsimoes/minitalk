@@ -6,17 +6,11 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:38:26 by tjorge-l          #+#    #+#             */
-/*   Updated: 2024/10/28 12:26:07 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2024/10/28 16:58:58 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk_bonus.h"
-
-void	error_check(int k)
-{
-	if (k == -1)
-		exit(1);
-}
 
 void	send_signal(unsigned int pid, int c)
 {
@@ -39,16 +33,32 @@ void	send_letter(unsigned int pid, char c)
 	}
 }
 
-void	incorrect_usage(void)
-{
-		ft_putstr_fd("Correct usage: ./client <PID> \"<MESSAGE>\"\n", 2);
-		exit(1);
-}
-
 void	handle_sigusr12(int sign)
 {
 	if (sign == SIGUSR2)
 		write(1, "Message acknowledged by the server.\n", 36);
+}
+
+void	send_info(char **argv, char *length_chars)
+{
+	pid_t	pid;
+	int		i;
+
+	i = 0;
+	pid = ft_atoi(argv[1]);
+	if (pid < 0)
+		exit(1);
+	while (i <= 3)
+	{
+		send_letter(pid, length_chars[i]);
+		i++;
+	}
+	i = 0;
+	while (argv[2][i])
+	{
+		send_letter(pid, argv[2][i]);
+		i++;
+	}
 }
 
 int	main(int argc, char **argv)
@@ -56,8 +66,6 @@ int	main(int argc, char **argv)
 	struct sigaction	sa;
 	int					length;
 	char				*length_chars;
-	pid_t	pid;
-	int		i;
 
 	if (argc != 3)
 		incorrect_usage();
@@ -70,22 +78,7 @@ int	main(int argc, char **argv)
 		sigemptyset(&sa.sa_mask);
 		error_check(sigaction(SIGUSR1, &sa, NULL));
 		error_check(sigaction(SIGUSR2, &sa, NULL));
-		i = 0;
-		pid = ft_atoi(argv[1]);
-		if (pid < 0)
-			exit(1);
-		while (i <= 3)
-		{
-			send_letter(pid, length_chars[i]);
-			i++;
-		}
-		i = 0;
-		while (argv[2][i])
-		{
-			send_letter(pid, argv[2][i]);
-			i++;
-		}
-		exit(0);
+		send_info(argv, length_chars);
 	}
 	return (0);
 }
