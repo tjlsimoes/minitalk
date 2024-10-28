@@ -6,7 +6,7 @@
 #    By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/24 15:15:50 by tjorge-l          #+#    #+#              #
-#    Updated: 2024/10/28 18:35:40 by tjorge-l         ###   ########.fr        #
+#    Updated: 2024/10/28 19:45:31 by tjorge-l         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ CLIENT_OBJ := $(CLIENT_SRC:.c=.o)
 
 # Bonus
 
-SERVER_SRC_BONUS := server_bonus.c
+SERVER_SRC_BONUS := server_bonus.c server_bonus_utils.c
 
 SERVER_OBJ_BONUS := $(SERVER_SRC_BONUS:.c=.o)
 

@@ -6,17 +6,11 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:38:43 by tjorge-l          #+#    #+#             */
-/*   Updated: 2024/10/28 19:19:54 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2024/10/28 19:45:13 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk_bonus.h"
-
-void	error_check(int k)
-{
-	if (k == -1)
-		exit(1);
-}
 
 char	*set_buffer_length(int *length, char length_str[4], int *i)
 {
@@ -44,21 +38,21 @@ void	terminate(siginfo_t *sa, int *length, char **msg, int *i)
 	kill(sa->si_pid, SIGUSR2);
 }
 
-void	check_pid(siginfo_t **sa, int *i, char *letter, char **msg, int *length)
+void	check_pid(siginfo_t **sa, int *i, char *letter, t_msg *msg_struct)
 {
-	static	pid_t		pid;
+	static pid_t		pid;
 
 	if ((*sa)->si_pid != pid && i != 0)
 	{
 		pid = (*sa)->si_pid;
 		*i = 1;
 		*letter = 0;
-		if (*msg)
+		if (msg_struct->msg)
 		{
-			free(*msg);
-			*msg = NULL;
+			free(msg_struct->msg);
+			msg_struct->msg = NULL;
 		}
-		*length = 0;
+		msg_struct->length = 0;
 	}
 }
 
@@ -67,22 +61,22 @@ void	handle_sigusr12(int sign, siginfo_t *sa)
 	static int		i = 1;
 	static char		letter = 0;
 	static char		length_str[4];
-	static int		length = 0;
-	static char		*msg = NULL;
+	static t_msg	msg_struct = {0};
 
-	check_pid(&sa, &i, &letter, &msg, &length);
+	check_pid(&sa, &i, &letter, &msg_struct);
 	letter = (letter << 1) | (sign == SIGUSR2);
 	if (i % 8 == 0 && i != 0)
 	{
-		if (length != 0)
-			msg[i / 8 - 1] = letter;
+		if (msg_struct.length != 0)
+			msg_struct.msg[i / 8 - 1] = letter;
 		else
 			length_str[i / 8 - 1] = letter;
-		if (i == 4 * 8 && !length)
-			msg = set_buffer_length(&length, length_str, &i);
+		if (i == 4 * 8 && !msg_struct.length)
+			msg_struct.msg = set_buffer_length(&(msg_struct.length),
+					length_str, &i);
 		letter = 0;
-		if (i / 8 - 1 == length - 1 && length)
-			terminate(sa, &length, &msg, &i);
+		if (i / 8 - 1 == msg_struct.length - 1 && msg_struct.length)
+			terminate(sa, &(msg_struct.length), &(msg_struct.msg), &i);
 	}
 	i++;
 	usleep(20);
