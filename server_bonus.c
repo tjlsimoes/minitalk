@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:38:43 by tjorge-l          #+#    #+#             */
-/*   Updated: 2024/10/28 12:12:39 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2024/10/28 16:25:45 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@ void	error_check(int k)
 		exit(1);
 }
 
+
+
 void	handle_sigusr12(int sign, siginfo_t *sa)
 {
-	static int		i = 0;
-	static int		j = 0;
+	static int		i = 1;
 	static char		letter = 0;
 	static char		length_str[4];
 	static int		length = 0;
@@ -31,39 +32,43 @@ void	handle_sigusr12(int sign, siginfo_t *sa)
 		letter = (letter << 1) | 0;
 	else
 		letter = (letter << 1) | 1;
-	if (i == 7)
+	ft_printf("i = %d\n", i);
+	if (i % 8 == 0 && i != 0)
 	{
+		ft_printf("Inside conditon: i == %d\n", i);
 		if (length != 0)
-			msg[j] = letter;
+		{
+			msg[i / 8 - 1] = letter;
+			ft_printf("Char added: %c | %c to index %d\n", letter, msg[i / 8 - 1], i / 8 - 1);
+		}
 		else
-			length_str[j] = letter;
-		if (j == 3 && !length)
+			length_str[i / 8 - 1] = letter;
+		if (i == 4 * 8 && !length)
 		{
 			ft_memcpy(&length, length_str, 4);
+			ft_printf("Length: %d\n", length);
 			msg = (char *)ft_calloc(1, length + 1);
 			if (!msg)
 			{
 				ft_putstr_fd("Error allocating memory for message.", 2);
 				return ;
 			}
-			j = -1;
+			i = 0;
 		}
-		i = 0;
 		letter = 0;
-		if (j == length - 1 && length)
+		if (i / 8 - 1 == length - 1 && length)
 		{
-			msg[j + 1] = '\0';
+			ft_printf("Final index: %d\n", ((i + 8) / 8) - 1);
+			msg[((i + 8) / 8) - 1] = '\0';
 			ft_printf("%s\n", msg);
 			free(msg);
 			msg = NULL;
-			j = -1;
+			i = 0;
 			length = 0;
 			kill(sa->si_pid, SIGUSR2);
 		}
-		j++;
 	}
-	else
-		i++;
+	i++;
 	usleep(10);
 	usleep(10);
 	kill(sa->si_pid, SIGUSR1);
