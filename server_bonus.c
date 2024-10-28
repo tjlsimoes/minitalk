@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:38:43 by tjorge-l          #+#    #+#             */
-/*   Updated: 2024/10/28 11:26:03 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2024/10/28 12:12:39 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ void	handle_sigusr12(int sign, siginfo_t *sa)
 	}
 	else
 		i++;
-
+	usleep(10);
+	usleep(10);
 	kill(sa->si_pid, SIGUSR1);
 }
 
