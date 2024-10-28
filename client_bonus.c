@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjorge-l <tjorge-l@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:38:26 by tjorge-l          #+#    #+#             */
-/*   Updated: 2024/10/23 11:05:57 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2024/10/28 10:25:18 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ void	handle_sigusr1(int sign)
 int	main(int argc, char **argv)
 {
 	struct sigaction	sa;
+	int					length;
+	char				*length_chars;
 	pid_t	pid;
 	int		i;
 
@@ -61,6 +63,8 @@ int	main(int argc, char **argv)
 		incorrect_usage();
 	else
 	{
+		length = ft_strlen(argv[2]);
+		length_chars = (char *)&length;
 		sa.sa_sigaction = (void *) handle_sigusr1;
 		sa.sa_flags = SA_SIGINFO;
 		error_check(sigaction(SIGUSR1, &sa, NULL));
@@ -69,6 +73,12 @@ int	main(int argc, char **argv)
 		pid = ft_atoi(argv[1]);
 		if (pid < 0)
 			exit(1);
+		while (i <= 3)
+		{
+			send_letter(pid, length_chars[i]);
+			i++;
+		}
+		i = 0;
 		while (argv[2][i])
 		{
 			send_letter(pid, argv[2][i]);
