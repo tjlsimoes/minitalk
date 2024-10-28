@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:38:26 by tjorge-l          #+#    #+#             */
-/*   Updated: 2024/10/28 10:25:18 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2024/10/28 11:31:15 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	incorrect_usage(void)
 		exit(1);
 }
 
-void	handle_sigusr1(int sign)
+void	handle_sigusr12(int sign)
 {
 	if (sign == SIGUSR2)
 		write(1, "Message acknowledged by the server.\n", 36);
@@ -65,8 +65,9 @@ int	main(int argc, char **argv)
 	{
 		length = ft_strlen(argv[2]);
 		length_chars = (char *)&length;
-		sa.sa_sigaction = (void *) handle_sigusr1;
+		sa.sa_sigaction = (void *) handle_sigusr12;
 		sa.sa_flags = SA_SIGINFO;
+		sigemptyset(&sa.sa_mask);
 		error_check(sigaction(SIGUSR1, &sa, NULL));
 		error_check(sigaction(SIGUSR2, &sa, NULL));
 		i = 0;

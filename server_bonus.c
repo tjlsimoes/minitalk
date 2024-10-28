@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:38:43 by tjorge-l          #+#    #+#             */
-/*   Updated: 2024/10/28 11:22:11 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2024/10/28 11:26:03 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,6 @@ void	error_check(int k)
 	if (k == -1)
 		exit(1);
 }
-
-// void	reset_variables(int *difference, int *i, char *letter, int sig_sent)
-// {
-// 	if (sig_sent)
-// 		*difference = 0;
-// 	else
-// 		*difference = 1;
-// 	*i = 0;
-// 	*letter = 0;
-// }
 
 void	handle_sigusr12(int sign, siginfo_t *sa)
 {
@@ -68,6 +58,7 @@ void	handle_sigusr12(int sign, siginfo_t *sa)
 			msg = NULL;
 			j = -1;
 			length = 0;
+			kill(sa->si_pid, SIGUSR2);
 		}
 		j++;
 	}
