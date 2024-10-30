@@ -3,22 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
+/*   By: tjorge-l <tjorge-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:38:26 by tjorge-l          #+#    #+#             */
-/*   Updated: 2024/10/28 16:58:58 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2024/10/30 10:41:17 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk_bonus.h"
 
+volatile sig_atomic_t signal_received = 0;
+
 void	send_signal(unsigned int pid, int c)
 {
+	sigset_t mask, oldmask;
+	sigemptyset(&mask);
+	sigaddset(&mask, SIGUSR1);
+	sigaddset(&mask, SIGUSR2);
+	sigprocmask(SIG_BLOCK, &mask, &oldmask);
+
 	if (c == 0)
 		error_check(kill(pid, SIGUSR1));
 	else
 		error_check(kill(pid, SIGUSR2));
-	pause();
+	while (!signal_received) {
+		sigsuspend(&oldmask);
+	}
+	signal_received = 0;
+	sigprocmask(SIG_SETMASK, &oldmask, NULL);
 }
 
 void	send_letter(unsigned int pid, char c)
@@ -35,6 +47,7 @@ void	send_letter(unsigned int pid, char c)
 
 void	handle_sigusr12(int sign)
 {
+	signal_received = 1;
 	if (sign == SIGUSR2)
 		write(1, "Message acknowledged by the server.\n", 36);
 }
