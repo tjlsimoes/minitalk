@@ -6,7 +6,7 @@
 #    By: tjorge-l <tjorge-l@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/24 15:15:50 by tjorge-l          #+#    #+#              #
-#    Updated: 2024/10/30 11:04:21 by tjorge-l         ###   ########.fr        #
+#    Updated: 2024/10/30 12:10:45 by tjorge-l         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,11 +35,11 @@ CLIENT_OBJ := $(CLIENT_SRC:.c=.o)
 
 # Bonus
 
-SERVER_SRC_BONUS := server_bonus.c server_bonus_utils.c
+SERVER_SRC_BONUS := server_bonus.c utils_bonus.c
 
 SERVER_OBJ_BONUS := $(SERVER_SRC_BONUS:.c=.o)
 
-CLIENT_SRC_BONUS := client_bonus.c client_bonus_utils.c
+CLIENT_SRC_BONUS := client_bonus.c utils_bonus.c
 
 CLIENT_OBJ_BONUS := $(CLIENT_SRC_BONUS:.c=.o)
 
@@ -88,42 +88,5 @@ re: fclean all
 
 .PHONY: all minitalk bonus clean fclean debug re
 
-# $(OBJ)
-# 	cd printf && $(MAKE)
-# 	cd libft && $(MAKE)
-# 	$(CC) $(CFLAGS) $(OBJ) $(PRINTF) $(LIBFT) -o $(NAME)
-## $(CC) $(CFLAGS) $(OBJ) -o $(NAME)
-
-# bonus: $(CHECKER_NAME)
-
-# $(CHECKER_NAME): $(CHECKER_OBJ)
-# 	cd printf && $(MAKE)
-# 	cd libft && $(MAKE)
-# 	$(CC) $(CFLAGS) $(CHECKER_OBJ) $(PRINTF) $(LIBFT) -o $(CHECKER_NAME)
-# ## $(CC) $(CFLAGS) $(OBJ) -o $(NAME)
-
-# clean:
-# 	cd printf && $(MAKE) clean
-# 	cd libft && $(MAKE) clean
-# 	$(RM) $(OBJ) $(CHECKER_OBJ)
-
-# fclean: clean
-# 	cd printf && $(MAKE) fclean
-# 	cd libft && $(MAKE) fclean
-# 	$(RM) $(NAME) $(CHECKER_NAME)
-
-# debug: CFLAGS += $(DEBUG_FLAGS)
-# debug: $(OBJ)
-# 	cd printf && $(MAKE)
-# 	cd libft && $(MAKE) debug
-# 	$(CC) -g $(CFLAGS) $(OBJ) $(PRINTF) $(LIBFT) -o $(NAME)
-
-# bdebug: CFLAGS += $(DEBUG_FLAGS)
-# bdebug: $(CHECKER_OBJ)
-# 	cd printf && $(MAKE)
-# 	cd libft && $(MAKE) debug
-# 	$(CC) $(CFLAGS) $(CHECKER_OBJ) $(PRINTF) $(LIBFT) -o $(CHECKER_NAME)
-
-# .PHONY: all bonus debug bdebug clean fclean re
 # https://www.baeldung.com/linux/a-so-extension-files
 # https://medium.com/@ayogun/makefile-basics-beginner-intermediate-c92377542c2c
