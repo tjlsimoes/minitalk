@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+         #
+#    By: tjorge-l <tjorge-l@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/24 15:15:50 by tjorge-l          #+#    #+#              #
-#    Updated: 2024/10/28 19:45:31 by tjorge-l         ###   ########.fr        #
+#    Updated: 2024/10/30 11:04:21 by tjorge-l         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,11 +25,11 @@ CC := cc
 CFLAGS := -Wall -Wextra -Werror
 DEBUG_FLAGS = -g
 
-SERVER_SRC := server.c
+SERVER_SRC := server.c utils.c
 
 SERVER_OBJ := $(SERVER_SRC:.c=.o)
 
-CLIENT_SRC := client.c
+CLIENT_SRC := client.c utils.c
 
 CLIENT_OBJ := $(CLIENT_SRC:.c=.o)
 

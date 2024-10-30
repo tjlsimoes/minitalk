@@ -1,30 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tjorge-l <tjorge-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/24 15:46:19 by tjorge-l          #+#    #+#             */
-/*   Updated: 2024/10/30 11:06:10 by tjorge-l         ###   ########.fr       */
+/*   Created: 2024/10/30 11:03:39 by tjorge-l          #+#    #+#             */
+/*   Updated: 2024/10/30 11:07:01 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
-# include "libft/libft.h"
-# include "printf/ft_printf.h"
-# include <stdlib.h>
-# include <unistd.h>
-# include <signal.h>
+#include "minitalk.h"
 
-typedef struct s_msg
+void	error_check(int k)
 {
-	int		length;
-	char	*msg;
-}	t_msg;
-
-void	error_check(int k);
-void	incorrect_usage(void);
-
-#endif
+	if (k == -1)
+		exit(1);
+}
+void	incorrect_usage(void)
+{
+	ft_putstr_fd("Correct usage: ./client <PID> \"<MESSAGE>\"\n", 2);
+	exit(1);
+}
